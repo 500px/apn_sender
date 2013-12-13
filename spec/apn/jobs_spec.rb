@@ -4,7 +4,7 @@ describe APN::Jobs::SidekiqNotificationJob do
   it { should be_a(Sidekiq::Worker) }
 
   it "has the right queue name" do
-    expect(subject.class.instance_variable_get(:@queue)).to eq(APN::Jobs::QUEUE_NAME)
+    expect(subject.class.get_sidekiq_options['queue']).to eq(APN::Jobs::QUEUE_NAME)
   end
 end
 

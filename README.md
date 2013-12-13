@@ -36,9 +36,10 @@ APN.notify_async(token, opts_hash)
 
 Where ```token``` is the unique identifier of the iPhone to receive the notification and ```opts_hash``` can have any of the following keys:
 
-* :alert  ## The alert to send
-* :badge  ## The badge number to send
-* :sound  ## The sound file to play on receipt, or true to play the default sound installed with your app
+* :alert      ## The alert to send
+* :badge      ## The badge number to send
+* :created_at ## The time the notification was created.  Notifications with a ```created_at``` older than the ```max_age``` (if set) will be discarded
+* :sound      ## The sound file to play on receipt, or true to play the default sound installed with your app
 
 If any other keys are present they'll be be passed along as custom data to your application.
 
