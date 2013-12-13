@@ -24,10 +24,21 @@ module APN
     MAX_ALERT_LENGTH = 199
     DATA_MAX_BYTES = 256
 
-    attr_accessor :options, :token
+    attr_accessor :options, :token, :created_at
     def initialize(token, opts)
       @options = opts.is_a?(Hash) ? opts.symbolize_keys : {:alert => opts}
       @token = token
+
+      @created_at = @options.delete(:created_at)
+      if !@created_at.nil?
+        if @created_at.kind_of?(Numeric)
+          @created_at = Time.at(@created_at).to_datetime
+        elsif @created_at.kind_of?(String)
+          @created_at = DateTime.parse(@created_at)
+        else
+          @created_at = @created_at.to_datetime
+        end
+      end
 
       truncate_alert! if APN.truncate_alert
 

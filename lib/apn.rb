@@ -22,6 +22,11 @@ module APN
       msg = APN::Notification.new(token, opts)
       raise "Invalid notification options (did you provide :alert, :badge, or :sound?): #{opts.inspect}" unless msg.valid?
 
+      if max_age && msg.created_at
+        # If max_age is set, ensure that this message is not too old
+        return if msg.created_at < (DateTime.now - max_age)
+      end
+
       APN.with_connection do |client|
         client.push(msg)
       end
@@ -56,6 +61,14 @@ module APN
 
     def truncate_alert=(truncate)
       @truncate_alert = truncate
+    end
+
+    def max_age
+      @max_age
+    end
+
+    def max_age=(max_age)
+      @max_age = max_age
     end
 
     # Log message to any logger provided by the user (e.g. the Rails logger).
